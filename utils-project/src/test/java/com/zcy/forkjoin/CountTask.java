@@ -1,4 +1,4 @@
-package forkjoin;
+package com.zcy.forkjoin;
 
 import java.util.ArrayList;
 import java.util.List;

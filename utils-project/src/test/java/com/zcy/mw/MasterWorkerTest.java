@@ -1,4 +1,4 @@
-package mw;
+package com.zcy.mw;
 
 import java.util.Random;
 

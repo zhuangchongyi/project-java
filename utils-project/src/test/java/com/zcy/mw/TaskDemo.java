@@ -1,4 +1,4 @@
-package mw;
+package com.zcy.mw;
 
 public class TaskDemo {
     private int id;
