@@ -1,0 +1,11 @@
+server:
+  port: 9090
+
+# rabbitmq\u7BA1\u7406\u754C\u9762 http://192.168.131.139:15672
+spring:
+  rabbitmq:
+    host: 192.168.131.139 # \u8FDE\u63A5\u4E3B\u673A\u5730\u5740
+    port: 5672 # \u7AEF\u53E3\u53F7
+    username: guest # \u7528\u6237\u540D
+    password: guest # \u5BC6\u7801
+    virtual-host: / #\u5730\u5740
