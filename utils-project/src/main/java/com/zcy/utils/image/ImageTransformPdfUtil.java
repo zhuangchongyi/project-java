@@ -7,17 +7,20 @@ import com.lowagie.text.Rectangle;
 import com.lowagie.text.pdf.PdfWriter;
 import com.zcy.common.constants.FileSuffixTypeConstant;
 import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.rendering.ImageType;
 import org.apache.pdfbox.rendering.PDFRenderer;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
-import java.util.Date;
 
 public class ImageTransformPdfUtil {
     public static void imagesToPdf(String imageFolderPath, String savePdfPath) {
         try {
+            File pdfFile = new File(savePdfPath);
+            if (!pdfFile.exists())
+                pdfFile.createNewFile();
             OutputStream pdfOut = new FileOutputStream(savePdfPath);
             // 创建文档
             Document doc = new Document();
@@ -45,7 +48,7 @@ public class ImageTransformPdfUtil {
                     image.setAlignment(Image.ALIGN_CENTER);
                     image.scaleAbsolute(width, height);
                     // 根据图片大小设置文档大小
-                    doc.setPageSize(new Rectangle(width,height));
+                    doc.setPageSize(new Rectangle(width, height));
                     // 新建页面
                     doc.newPage();
                     // 添加图片到文档
@@ -74,21 +77,21 @@ public class ImageTransformPdfUtil {
      */
     public static void pdfToImage(String pdfPath, String savePath, String fileType, boolean isLongImg) throws IOException {
         // 读取PDF文件
-        File pdfFile = new File(pdfPath);
-        PDDocument pdDocument = PDDocument.load(pdfFile);
+        PDDocument pdDocument = PDDocument.load(new File(pdfPath));
         PDFRenderer pdfRenderer = new PDFRenderer(pdDocument);
         int pages = pdDocument.getNumberOfPages();
-        BufferedImage image = null;
         File file = new File(savePath);
-        if (!file.exists() && !isLongImg){
+        if (!file.exists() && !isLongImg) {
             file.mkdirs();
         }
-        for (int i = 0; i < pages; i++) {
-            BufferedImage img = pdfRenderer.renderImage(i);
+        BufferedImage image = null;
+        for (int i = 2; i < 10; i++) {
+            BufferedImage img = //pdfRenderer.renderImage(i);
+            pdfRenderer.renderImageWithDPI(i, 500, ImageType.RGB);
             image = getPdfImage(image, img);
             if (!isLongImg) {
-                String fileName = "image" + new Date().getTime() + FileSuffixTypeConstant.DOT_PNG;
-                ImageIO.write(image, fileType, new File(savePath + File.separator + fileName));
+                String fileName = "image" + i + FileSuffixTypeConstant.DOT_PNG;
+                ImageIO.write(img, fileType, new FileOutputStream(savePath + File.separator + fileName));
             }
         }
         // 导出长图
@@ -117,19 +120,21 @@ public class ImageTransformPdfUtil {
     }
 
 
-//    public static void main(String[] args) throws IOException {
-//        long start = System.currentTimeMillis();
-//
-//        String imageFolderPath = "C:\\Users\\DELL\\Pictures\\Saved Pictures\\";
-//        String savePdfPath = System.getProperty("user.dir").concat("/source/img.pdf");
-////        imagesToPdf(imageFolderPath, savePdfPath);
-//
-//        String pdfToimg = System.getProperty("user.dir").concat("/source/pdfToimg.png");
-//        String savePath = System.getProperty("user.dir").concat("/source/img");
-//        pdfToImage(savePdfPath, pdfToimg, FileSuffixTypeConstant.PNG, true);
-//
-//        long time = System.currentTimeMillis() - start;
-//        System.out.println("耗时:" + time);
-//
-//    }
+    public static void main(String[] args) throws IOException {
+
+        String imageFolderPath = "C:\\Users\\DELL\\Pictures\\Saved Pictures\\";
+        String path = System.getProperty("user.dir");
+        String savePdfPath = path.concat("/source/img.pdf");
+        // imagesToPdf(imageFolderPath, savePdfPath);
+
+        String pdfToimg = path.concat("/source/pdfToimg.png");
+        String savePath = path.concat("/source/img");
+//        pdfToImage(savePdfPath, savePath, FileSuffixTypeConstant.PNG, false);
+
+
+        String pdfPath2 = "F:\\我的笔记\\book\\JVM高级特性与最佳实践（最新第二版）.pdf";
+        String savePath2 = "F:\\我的笔记\\book\\jvm";
+        pdfToImage(pdfPath2, savePath2, FileSuffixTypeConstant.PNG, false);
+//        imagesToPdf(savePath2, savePath2 + "\\jvm.pdf");
+    }
 }
