@@ -1,0 +1,38 @@
+spring:
+  datasource:
+    # 数据源基本配置
+#    type: com.alibaba.druid.pool.DruidDataSource
+    #如果存在多个数据源，监控的时候可以通过名字来区分开来。如果没有配置，将会生成一个名字，格式是："DataSource-" + System.identityHashCode(this)
+    name: DataSource-mysql8.0.17
+    # 数据源其他配置
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/mydb?useUnicode=true&characterEncoding=utf-8&serverTimezone=GMT%2B8
+    username: root
+    password: root
+    druid:
+      initial-size: 5
+      min-idle: 5
+      max-active: 20
+      max-wait: 60000
+      time-between-eviction-runs-millis: 60000
+      min-evictable-idle-time-millis: 300000
+      validation-query: SELECT 1 FROM DUAL
+      test-while-idle: true
+      test-on-borrow: false
+      test-on-return: false
+      pool-prepared-statements: true
+      # 配置监控统计Filters,去掉后控制界面sql无法统计,'wall'用于防火墙
+      filters: stat,wall
+      max-pool-prepared-statement-per-connection-size: 20
+      use-global-data-source-stat: true
+      connect-properties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=500
+
+mybatis:
+  configuration:
+    # 开启mybatis驼峰命名
+    map-underscore-to-camel-case: true
+  mapper-locations: classpath:/mapper/*Mapper.xml
+  type-aliases-package: com.zcy.**.entity
+
+server:
+  port: 9093
