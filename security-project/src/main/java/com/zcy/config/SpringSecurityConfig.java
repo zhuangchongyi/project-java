@@ -1,6 +1,7 @@
 package com.zcy.config;
 
 import com.zcy.security.authentication.CustomAuthenticationProvider;
+import com.zcy.security.permission.CustomPermissionEvaluator;
 import com.zcy.security.service.CustomUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -12,6 +13,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.web.access.expression.DefaultWebSecurityExpressionHandler;
 import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
@@ -84,6 +86,10 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
     }
 
+    /**
+     * token持久化
+     * @return
+     */
     @Bean
     public PersistentTokenRepository persistentTokenRepository() {
         JdbcTokenRepositoryImpl tokenRepository = new JdbcTokenRepositoryImpl();
@@ -91,5 +97,16 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
         // 如果token表不存在，使用下面语句可以初始化该表；若存在，请注释掉这条语句，否则会报错。persistent_logins表
         //tokenRepository.setCreateTableOnStartup(true);
         return tokenRepository;
+    }
+
+    /**
+     * 自定义PermissionEvaluator
+     * @return
+     */
+    @Bean
+    public DefaultWebSecurityExpressionHandler webSecurityExpressionHandler(){
+        DefaultWebSecurityExpressionHandler handler = new DefaultWebSecurityExpressionHandler();
+        handler.setPermissionEvaluator(new CustomPermissionEvaluator());
+        return handler;
     }
 }

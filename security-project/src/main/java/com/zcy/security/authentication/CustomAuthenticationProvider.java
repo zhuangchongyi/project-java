@@ -48,8 +48,9 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
         if (!BCrypt.checkpw(inputPassword, password)) {
             throw new BadCredentialsException("密码错误");
         }
+//        return new UsernamePasswordAuthenticationToken(inputName, password, userDetails.getAuthorities());
+        return new UsernamePasswordAuthenticationToken(userDetails, password, userDetails.getAuthorities());
 
-        return new UsernamePasswordAuthenticationToken(inputName, password, userDetails.getAuthorities());
     }
 
     /**

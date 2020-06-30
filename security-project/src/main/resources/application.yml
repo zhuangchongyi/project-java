@@ -26,6 +26,8 @@ spring:
       max-pool-prepared-statement-per-connection-size: 20
       use-global-data-source-stat: true
       connect-properties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=500
+  main:
+    allow-bean-definition-overriding: true
 
 mybatis:
   configuration:

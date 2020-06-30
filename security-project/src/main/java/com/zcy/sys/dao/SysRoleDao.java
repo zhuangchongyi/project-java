@@ -12,4 +12,6 @@ public interface SysRoleDao {
 
     SysRole queryById(Integer roleId);
 
+    SysRole queryByCode (String roleCode);
+
 }

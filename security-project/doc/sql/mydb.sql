@@ -11,7 +11,7 @@
  Target Server Version : 80017
  File Encoding         : 65001
 
- Date: 29/06/2020 21:55:01
+ Date: 30/06/2020 12:57:16
 */
 
 SET NAMES utf8mb4;
@@ -30,6 +30,26 @@ CREATE TABLE `persistent_logins`  (
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
+-- Table structure for sys_permission
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_permission`;
+CREATE TABLE `sys_permission`  (
+  `permission_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '权限编号',
+  `url` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '请求url',
+  `role_id` int(11) NULL DEFAULT NULL COMMENT '角色编号',
+  `permission` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '权限',
+  PRIMARY KEY (`permission_id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '用户权限表' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of sys_permission
+-- ----------------------------
+INSERT INTO `sys_permission` VALUES (1, '/superAdmin', 1, 'c,r,u,d');
+INSERT INTO `sys_permission` VALUES (3, '/admin', 1, 'c,r,u,d');
+INSERT INTO `sys_permission` VALUES (5, '/admin', 2, 'r');
+INSERT INTO `sys_permission` VALUES (6, '/user', 3, 'c');
+
+-- ----------------------------
 -- Table structure for sys_role
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_role`;
@@ -38,7 +58,7 @@ CREATE TABLE `sys_role`  (
   `role_code` varchar(25) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '角色编码',
   `role_name` varchar(25) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '角色名称',
   PRIMARY KEY (`role_id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '用户角色表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '用户角色表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_role
@@ -71,7 +91,7 @@ INSERT INTO `sys_user` VALUES (5, '周四', '1005', '$2a$10$xeSiM9zeLsYwzUKu.9.S
 INSERT INTO `sys_user` VALUES (6, '周五', '1006', '$2a$10$xeSiM9zeLsYwzUKu.9.SV.gtPWH.r7LDfl5Itw8m9jO1ImckJ7xbi', '女');
 INSERT INTO `sys_user` VALUES (7, '周六', '1007', '$2a$10$xeSiM9zeLsYwzUKu.9.SV.gtPWH.r7LDfl5Itw8m9jO1ImckJ7xbi', '女');
 INSERT INTO `sys_user` VALUES (8, '周日', '1008', '$2a$10$xeSiM9zeLsYwzUKu.9.SV.gtPWH.r7LDfl5Itw8m9jO1ImckJ7xbi', '男');
-INSERT INTO `sys_user` VALUES (9, 'zcy', 'zcy', '$2a$10$xeSiM9zeLsYwzUKu.9.SV.gtPWH.r7LDfl5Itw8m9jO1ImckJ7xbi', '男');
+INSERT INTO `sys_user` VALUES (9, 'admin', 'admin', '$2a$10$xeSiM9zeLsYwzUKu.9.SV.gtPWH.r7LDfl5Itw8m9jO1ImckJ7xbi', '男');
 
 -- ----------------------------
 -- Table structure for sys_user_role

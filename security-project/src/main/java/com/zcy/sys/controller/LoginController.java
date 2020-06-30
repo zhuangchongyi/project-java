@@ -59,9 +59,16 @@ public class LoginController {
 
     @RequestMapping("/admin")
     @ResponseBody
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public String printAdmin() {
-        return "如果你看见这句话，说明你有普通管理员角色";
+    @PreAuthorize("hasPermission('/admin','r')") //参数1指明了访问该接口需要的url，参数2指明了访问该接口需要的权限
+    public String printAdminR() {
+        return "如果你看见这句话，说明你访问/admin路径具有r权限";
+    }
+
+    @RequestMapping("/admin/c")
+    @ResponseBody
+    @PreAuthorize("hasPermission('/admin','c')")
+    public String printAdminC() {
+        return "如果你看见这句话，说明你访问/admin路径具有c权限";
     }
 
     @RequestMapping("/user")

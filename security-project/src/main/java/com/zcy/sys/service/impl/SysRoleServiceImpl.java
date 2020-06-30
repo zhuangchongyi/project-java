@@ -15,4 +15,9 @@ public class SysRoleServiceImpl implements ISysRoleService {
     public SysRole queryById(Integer roleId) {
         return sysRoleDao.queryById(roleId);
     }
+
+    @Override
+    public SysRole queryByRoleCode(String roleCode) {
+        return sysRoleDao.queryByCode(roleCode);
+    }
 }

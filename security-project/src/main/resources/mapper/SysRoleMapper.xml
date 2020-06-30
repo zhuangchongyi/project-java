@@ -15,5 +15,9 @@
         <include refid="baseSysRole"/>
         where role_id = #{roleId}
     </select>
+    <select id="queryByCode" resultMap="SysRoleMap">
+        <include refid="baseSysRole"/>
+        where role_code = #{roleCode}
+    </select>
 
 </mapper>
