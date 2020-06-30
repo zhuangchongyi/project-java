@@ -30,15 +30,15 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
         /**
          * 直接过滤掉该地址，即该地址不走 Spring Security 过滤器链
          */
-        web.ignoring().antMatchers("/hello")
-                // 设置拦截忽略文件夹，可以对静态资源放行
-                .antMatchers("/css/**", "/js/**");
+        // 设置拦截忽略文件夹，可以对静态资源放行
+        web.ignoring().antMatchers("/css/**", "/js/**");
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
                 // 如果有匿名的url填在下面
+                .antMatchers("/getVerifyCode").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 // 设置登录界面
@@ -50,13 +50,13 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 // 退出登录
                 .logout().permitAll()
+                .and()
                 // 记住我/自动登录，自动在 Cookie 中保存一个名为 remember-me 的cookie，默认有效期为2周，其值是一个加密字符串
-                .and().rememberMe()
+                .rememberMe()
                 .tokenRepository(persistentTokenRepository())
                 // 有效时间：单位s
                 .tokenValiditySeconds(60)
-                .userDetailsService(userDetailsService)
-        ;
+                .userDetailsService(userDetailsService);
 
 
         // 关闭CDRF跨域
