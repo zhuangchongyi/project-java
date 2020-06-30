@@ -32,6 +32,13 @@ spring:
   devtools:
     restart:
       enabled: true
+  # 配置redis
+  redis:
+    host: 192.168.131.139
+    port: 6379
+  # 指定session的存储方式
+  session:
+    store-type: redis
 
 mybatis:
   configuration:
@@ -41,7 +48,7 @@ mybatis:
   type-aliases-package: com.zcy.**.entity
 
 server:
-  port: 9093
+  port: 8080
   servlet:
     session:
       timeout: 60 # session的超时时间，当达到超时时间后，自动将用户退出登录
