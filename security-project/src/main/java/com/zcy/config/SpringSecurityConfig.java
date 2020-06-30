@@ -1,21 +1,22 @@
 package com.zcy.config;
 
-import com.zcy.security.filter.VerifyCodeFilter;
+import com.zcy.security.authentication.CustomAuthenticationProvider;
 import com.zcy.security.service.CustomUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationDetailsSource;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.sql.DataSource;
 
 @Configuration
@@ -26,6 +27,10 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
     private CustomUserDetailsService userDetailsService;
     @Autowired
     private DataSource dataSource;
+    @Autowired
+    private AuthenticationDetailsSource<HttpServletRequest, WebAuthenticationDetails> authenticationDetailsSource;
+    @Autowired
+    private CustomAuthenticationProvider authenticationProvider;
 
     @Override
     public void configure(WebSecurity web) throws Exception {
@@ -49,9 +54,11 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                 .defaultSuccessUrl("/").permitAll()
                 // 登陆失败url
                 .failureUrl("/login/error")
+                // 指定authenticationDetailsSource
+                .authenticationDetailsSource(authenticationDetailsSource)
                 .and()
                 // 添加验证码过滤器
-                .addFilterBefore(new VerifyCodeFilter(), UsernamePasswordAuthenticationFilter.class)
+                //.addFilterBefore(new VerifyCodeFilter(), UsernamePasswordAuthenticationFilter.class)
                 // 退出登录
                 .logout().permitAll()
                 .and()
@@ -69,20 +76,12 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        //自定义安全校验
+        auth.authenticationProvider(authenticationProvider);
 //        auth.inMemoryAuthentication().withUser("root").roles("root").password("$2a$10$kitT0M97FUL0lX2cpefUKuj3zIGLeSZNHE1ANLbK7zvTN8CRHCB/O");//123456
-        auth.userDetailsService(userDetailsService)
-//                .passwordEncoder(new PasswordEncoder() {
-//                    @Override
-//                    public String encode(CharSequence charSequence) {
-//                        return charSequence.toString();
-//                    }
-//
-//                    @Override
-//                    public boolean matches(CharSequence charSequence, String s) {
-//                        return s.equals(charSequence.toString());
-//                    }
-//                });
-                .passwordEncoder(new BCryptPasswordEncoder()); // 加密
+//        auth.userDetailsService(userDetailsService)
+//                .passwordEncoder(new BCryptPasswordEncoder()); // 加密
+
     }
 
     @Bean
