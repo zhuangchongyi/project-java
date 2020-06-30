@@ -1,6 +1,8 @@
 package com.zcy.config;
 
 import com.zcy.security.authentication.CustomAuthenticationProvider;
+import com.zcy.security.handler.CustomAuthenticationFailureHandler;
+import com.zcy.security.handler.CustomAuthenticationSuccessHandler;
 import com.zcy.security.permission.CustomPermissionEvaluator;
 import com.zcy.security.service.CustomUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +35,11 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
     private AuthenticationDetailsSource<HttpServletRequest, WebAuthenticationDetails> authenticationDetailsSource;
     @Autowired
     private CustomAuthenticationProvider authenticationProvider;
+    @Autowired
+    private CustomAuthenticationSuccessHandler authenticationSuccessHandler;
+    @Autowired
+    private CustomAuthenticationFailureHandler authenticationFailureHandler;
+
 
     @Override
     public void configure(WebSecurity web) throws Exception {
@@ -52,10 +59,14 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 // 设置登录界面
                 .formLogin().loginPage("/login")
-                // 设置登录成功跳转界面
-                .defaultSuccessUrl("/").permitAll()
                 // 登陆失败url
-                .failureUrl("/login/error")
+                //.failureUrl("/login/error")
+                // 登录成功url
+                //.defaultSuccessUrl("/")
+                //当设置successHandler()和failureHandler()来实现自定义认证成功、失败处理后，需要去除 failureUrl()和defaultSuccessUrl()的设置，否则无法生效。
+                .successHandler(authenticationSuccessHandler)
+                .failureHandler(authenticationFailureHandler)
+                .permitAll()
                 // 指定authenticationDetailsSource
                 .authenticationDetailsSource(authenticationDetailsSource)
                 .and()
@@ -100,7 +111,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     /**
-     * 自定义PermissionEvaluator
+     * 自定义PermissionEvaluator权限控制
      * @return
      */
     @Bean
