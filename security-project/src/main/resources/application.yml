@@ -38,3 +38,6 @@ mybatis:
 
 server:
   port: 9093
+  servlet:
+    session:
+      timeout: 60 # session的超时时间，当达到超时时间后，自动将用户退出登录
