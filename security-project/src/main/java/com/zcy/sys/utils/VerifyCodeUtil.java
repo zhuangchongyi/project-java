@@ -1,8 +1,5 @@
 package com.zcy.sys.utils;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import javax.imageio.ImageIO;
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
@@ -21,7 +18,6 @@ import java.util.Random;
  * @Date 2020/6/30 9:47
  */
 public class VerifyCodeUtil implements Serializable {
-    private static final Logger log = LoggerFactory.getLogger(VerifyCodeUtil.class.getName());
     private static final long serialVersionUID = -5051097528828603895L;
 
     /**
@@ -129,8 +125,7 @@ public class VerifyCodeUtil implements Serializable {
         // 将四位数字的验证码保存到Session中。
         HttpSession session = request.getSession();
         String code = randomCode.toString();
-        log.info("verify code: "+code);
-        session.setAttribute("validateCode", code);
+        session.setAttribute("verifyCode", code);
         // 禁止图像缓存。
         response.setHeader("Pragma", "no-cache");
         response.setHeader("Cache-Control", "no-cache");

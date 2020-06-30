@@ -1,4 +1,4 @@
-package com.zcy.security;
+package com.zcy.security.service;
 
 import com.zcy.sys.entity.SysRole;
 import com.zcy.sys.entity.SysUser;

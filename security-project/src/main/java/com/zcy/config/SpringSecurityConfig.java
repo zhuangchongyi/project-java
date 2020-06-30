@@ -1,6 +1,7 @@
 package com.zcy.config;
 
-import com.zcy.security.CustomUserDetailsService;
+import com.zcy.security.filter.VerifyCodeFilter;
+import com.zcy.security.service.CustomUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -11,6 +12,7 @@ import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 
@@ -48,6 +50,8 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                 // 登陆失败url
                 .failureUrl("/login/error")
                 .and()
+                // 添加验证码过滤器
+                .addFilterBefore(new VerifyCodeFilter(), UsernamePasswordAuthenticationFilter.class)
                 // 退出登录
                 .logout().permitAll()
                 .and()
