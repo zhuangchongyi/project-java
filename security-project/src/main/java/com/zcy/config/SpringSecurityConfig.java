@@ -5,6 +5,7 @@ import com.zcy.security.handler.CustomAuthenticationFailureHandler;
 import com.zcy.security.handler.CustomAuthenticationSuccessHandler;
 import com.zcy.security.permission.CustomPermissionEvaluator;
 import com.zcy.security.service.CustomUserDetailsService;
+import com.zcy.security.strategy.CustomExpiredSessionStrategy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -39,7 +40,6 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
     private CustomAuthenticationSuccessHandler authenticationSuccessHandler;
     @Autowired
     private CustomAuthenticationFailureHandler authenticationFailureHandler;
-
 
     @Override
     public void configure(WebSecurity web) throws Exception {
@@ -77,16 +77,25 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                 // 退出登录
                 .logout().permitAll()
                 .and()
-                //session超时处理方式: invalidSessionStrategy()和invalidSessionUrl()
-                .sessionManagement()
-                .invalidSessionUrl("/login/invalid")
-                .and()
                 // 记住我/自动登录，自动在 Cookie 中保存一个名为 remember-me 的cookie，默认有效期为2周，其值是一个加密字符串
                 .rememberMe()
                 .tokenRepository(persistentTokenRepository())
                 // 有效时间：单位s
                 .tokenValiditySeconds(60)
-                .userDetailsService(userDetailsService);
+                .userDetailsService(userDetailsService)
+                //session超时处理方式: invalidSessionStrategy()和invalidSessionUrl() 二选一
+                .and()
+                .sessionManagement()
+                // 指定跳转url
+                .invalidSessionUrl("/login/invalid")
+                //指定最大登录数
+                .maximumSessions(1)
+                // 是否保留已经登录的用户；为true，新用户无法登录；为 false，旧用户被踢出
+                .maxSessionsPreventsLogin(true)
+                // 旧用户被踢出后处理方法
+                .expiredSessionStrategy(new CustomExpiredSessionStrategy())
+
+        ;
 
 
         // 关闭CDRF跨域
@@ -105,6 +114,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
     /**
      * token持久化
+     *
      * @return
      */
     @Bean
@@ -118,10 +128,11 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
     /**
      * 自定义PermissionEvaluator权限控制
+     *
      * @return
      */
     @Bean
-    public DefaultWebSecurityExpressionHandler webSecurityExpressionHandler(){
+    public DefaultWebSecurityExpressionHandler webSecurityExpressionHandler() {
         DefaultWebSecurityExpressionHandler handler = new DefaultWebSecurityExpressionHandler();
         handler.setPermissionEvaluator(new CustomPermissionEvaluator());
         return handler;
