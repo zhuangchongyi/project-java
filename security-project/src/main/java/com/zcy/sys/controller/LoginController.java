@@ -1,21 +1,20 @@
 package com.zcy.sys.controller;
 
+import com.zcy.sys.service.ISysUserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.session.SessionInformation;
-import org.springframework.security.core.session.SessionRegistry;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.List;
 
 /**
  * 用户表(SysUser)表控制层
@@ -26,33 +25,9 @@ import java.util.List;
 @Controller
 public class LoginController {
     private Logger log = LoggerFactory.getLogger(LoginController.class);
-    @Autowired
-    private SessionRegistry sessionRegistry;
 
-    @GetMapping("handOut/{username}")
-    @ResponseBody
-    public String handOut(@PathVariable("username") String username) {
-        int count = 0;
-        // 获取session中所有的用户信息
-        List<Object> allPrincipals = sessionRegistry.getAllPrincipals();
-        for (Object principal : allPrincipals) {
-            if (principal instanceof User) {
-                String principalName = ((User) principal).getUsername();
-                if (principalName.equals(username)) {
-                    // 清理过期的session
-                    List<SessionInformation> allSessions = sessionRegistry.getAllSessions(principal, false);
-                    if (null != allSessions && allSessions.size() > 0) {
-                        for (SessionInformation session : allSessions) {
-                            session.expireNow(); // 退出
-                            count++;
-                        }
-                    }
-                }
-            }
-        }
-
-        return "操作成功，清理session共" + count + "个";
-    }
+    @Resource
+    private ISysUserService sysUserService;
 
     @RequestMapping("/")
     public String showHame() {

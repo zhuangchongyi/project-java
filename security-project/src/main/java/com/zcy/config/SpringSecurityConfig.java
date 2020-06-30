@@ -16,8 +16,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.session.SessionRegistry;
-import org.springframework.security.core.session.SessionRegistryImpl;
 import org.springframework.security.web.access.expression.DefaultWebSecurityExpressionHandler;
 import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
@@ -78,13 +76,13 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                 //.addFilterBefore(new VerifyCodeFilter(), UsernamePasswordAuthenticationFilter.class)
                 // 退出登录
                 .logout().permitAll()
+                .and()
                 // 记住我/自动登录，自动在 Cookie 中保存一个名为 remember-me 的cookie，默认有效期为2周，其值是一个加密字符串
-                //.and()
-                //.rememberMe()
-                //.tokenRepository(persistentTokenRepository())
+                .rememberMe()
+                .tokenRepository(persistentTokenRepository())
                 // 有效时间：单位s
-                //.tokenValiditySeconds(60)
-                //.userDetailsService(userDetailsService)
+                .tokenValiditySeconds(60)
+                .userDetailsService(userDetailsService)
                 //session超时处理方式: invalidSessionStrategy()和invalidSessionUrl() 二选一
                 .and()
                 .sessionManagement()
@@ -92,11 +90,10 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                 .invalidSessionUrl("/login/invalid")
                 //指定最大登录数
                 .maximumSessions(1)
-                // 当达到最大值时,是否保留已经登录的用户；为true，新用户无法登录；为 false，旧用户被踢出
-                .maxSessionsPreventsLogin(false)
-                // 当达到最大值时,旧用户被踢出后处理方法
+                // 是否保留已经登录的用户；为true，新用户无法登录；为 false，旧用户被踢出
+                .maxSessionsPreventsLogin(true)
+                // 旧用户被踢出后处理方法
                 .expiredSessionStrategy(new CustomExpiredSessionStrategy())
-                .sessionRegistry(sessionRegistry())
 
         ;
 
@@ -116,7 +113,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     /**
-     * token持久化至数据库
+     * token持久化
      *
      * @return
      */
@@ -139,15 +136,5 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
         DefaultWebSecurityExpressionHandler handler = new DefaultWebSecurityExpressionHandler();
         handler.setPermissionEvaluator(new CustomPermissionEvaluator());
         return handler;
-    }
-
-    /**
-     * 注入SessionRegistry
-     *
-     * @return
-     */
-    @Bean
-    public SessionRegistry sessionRegistry() {
-        return new SessionRegistryImpl();
     }
 }

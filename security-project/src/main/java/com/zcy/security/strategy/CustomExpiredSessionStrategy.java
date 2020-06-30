@@ -19,14 +19,7 @@ import java.util.Map;
 public class CustomExpiredSessionStrategy implements SessionInformationExpiredStrategy {
     private ObjectMapper objectMapper = new ObjectMapper();
     //private RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
-//    private static CustomExpiredSessionStrategy customExpiredSessionStrategy;
 
-    //使用@PostConstruct注解，该方法会在服务器加载Servlet的时候运行，并且只会被服务器调用一次
-//    @PostConstruct
-//    public void init() {
-//        customExpiredSessionStrategy = this;
-//        customExpiredSessionStrategy.objectMapper = this.objectMapper;
-//    }
 
     @Override
     public void onExpiredSessionDetected(SessionInformationExpiredEvent event) throws IOException, ServletException {
@@ -36,7 +29,6 @@ public class CustomExpiredSessionStrategy implements SessionInformationExpiredSt
                 new SimpleDateFormat("YYYY-MM-DD hh:mm:ss").format(event.getSessionInformation().getLastRequest()));
         // 转json字符串
         String result = objectMapper.writeValueAsString(map);
-//        String result = customExpiredSessionStrategy.objectMapper.writeValueAsString(map);
         HttpServletResponse response = event.getResponse();
         response.setContentType("application/json;charset=UTF-8");
         response.getWriter().write(result);
