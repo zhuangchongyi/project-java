@@ -3,6 +3,7 @@ package com.zcy.config;
 import com.zcy.security.authentication.CustomAuthenticationProvider;
 import com.zcy.security.handler.CustomAuthenticationFailureHandler;
 import com.zcy.security.handler.CustomAuthenticationSuccessHandler;
+import com.zcy.security.handler.CustomLogoutSuccessHandler;
 import com.zcy.security.permission.CustomPermissionEvaluator;
 import com.zcy.security.service.CustomUserDetailsService;
 import com.zcy.security.strategy.CustomExpiredSessionStrategy;
@@ -42,6 +43,8 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
     private CustomAuthenticationSuccessHandler authenticationSuccessHandler;
     @Autowired
     private CustomAuthenticationFailureHandler authenticationFailureHandler;
+    @Autowired
+    private CustomLogoutSuccessHandler logoutSuccessHandler;
 
     @Override
     public void configure(WebSecurity web) throws Exception {
@@ -77,7 +80,11 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                 // 添加验证码过滤器
                 //.addFilterBefore(new VerifyCodeFilter(), UsernamePasswordAuthenticationFilter.class)
                 // 退出登录
-                .logout().permitAll()
+                .logout()
+                .logoutUrl("/signout")//默认的退出 Url 是 /logout
+                .deleteCookies("JSESSIONID") //配置当退出时清除浏览器的 Cookie
+                .logoutSuccessHandler(logoutSuccessHandler)//配置退出后处理的逻辑
+                .permitAll()
                 // 记住我/自动登录，自动在 Cookie 中保存一个名为 remember-me 的cookie，默认有效期为2周，其值是一个加密字符串
                 //.and()
                 //.rememberMe()
