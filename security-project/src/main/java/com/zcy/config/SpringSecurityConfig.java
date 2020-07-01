@@ -116,11 +116,30 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         //自定义安全校验
         auth.authenticationProvider(authenticationProvider);
-//        auth.inMemoryAuthentication().withUser("root").roles("root").password("$2a$10$kitT0M97FUL0lX2cpefUKuj3zIGLeSZNHE1ANLbK7zvTN8CRHCB/O");//123456
+
+        // 默认用户
+        //auth.inMemoryAuthentication().withUser("root").roles("root").password("$2a$10$kitT0M97FUL0lX2cpefUKuj3zIGLeSZNHE1ANLbK7zvTN8CRHCB/O");//123456
 //        auth.userDetailsService(userDetailsService)
 //                .passwordEncoder(new BCryptPasswordEncoder()); // 加密
 
+        //处理不抛出UsernameNotFoundException异常
+//        auth.authenticationProvider(authenticationProvider());
     }
+
+    /**
+     * 默认不实现AuthenticationProvider时,无法抛出 UsernameNotFoundException
+     * 走DaoAuthenticationProvider
+     * 出异常AbstractUserDetailsAuthenticationProvider.hideUserNotFoundExceptions为true时会包装为BadCredentialsException异常
+     * @return
+     */
+//    @Bean
+//    public DaoAuthenticationProvider authenticationProvider() {
+//        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
+//        provider.setHideUserNotFoundExceptions(false);
+//        provider.setUserDetailsService(userDetailsService);
+//        provider.setPasswordEncoder(new BCryptPasswordEncoder());
+//        return provider;
+//    }
 
     /**
      * token持久化至数据库

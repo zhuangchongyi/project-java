@@ -30,6 +30,6 @@ public class CustomAuthenticationFailureHandler implements AuthenticationFailure
         logger.info("登录失败",e.toString());
         response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
         response.setContentType("application/json;charset=UTF-8");
-        response.getWriter().write(objectMapper.writeValueAsString(e.getMessage()));
+        response.getWriter().write(objectMapper.writeValueAsString(e.toString()));
     }
 }
