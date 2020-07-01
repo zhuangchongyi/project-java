@@ -10,6 +10,8 @@ import com.zcy.security.strategy.CustomExpiredSessionStrategy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.access.hierarchicalroles.RoleHierarchy;
+import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl;
 import org.springframework.security.authentication.AuthenticationDetailsSource;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -176,4 +178,20 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
     public SessionRegistry sessionRegistry() {
         return new SessionRegistryImpl();
     }
+
+    /**
+     * 定义一个角色层级
+     * @return
+     */
+    @Bean
+    public RoleHierarchy roleHierarchy(){
+        RoleHierarchyImpl roleHierarchy = new RoleHierarchyImpl();
+//        String hierarchy = "ROLE_ADMIN > ROLE_USER"; // 表示 ROLE_ADMIN 用户继承 ROLE_USER 用户的所有权限
+        // 多个层级关系用\n相隔
+        String separator = System.lineSeparator();
+        String hierarchy = "ROLE_SUPER_ADMIN > ROLE_ADMIN " + separator + " ROLE_SUPER_ADMIN > ROLE_USER";
+        roleHierarchy.setHierarchy(hierarchy);
+        return roleHierarchy;
+    }
+
 }
