@@ -1,10 +1,11 @@
 package com.zcy.config;
 
-import com.zcy.security.authentication.CustomAuthenticationProvider;
+import com.zcy.security.config.SmsCodeAuthenticationSecurityConfig;
 import com.zcy.security.handler.CustomAuthenticationFailureHandler;
 import com.zcy.security.handler.CustomAuthenticationSuccessHandler;
 import com.zcy.security.handler.CustomLogoutSuccessHandler;
 import com.zcy.security.permission.CustomPermissionEvaluator;
+import com.zcy.security.provider.CustomAuthenticationProvider;
 import com.zcy.security.service.CustomUserDetailsService;
 import com.zcy.security.strategy.CustomExpiredSessionStrategy;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +31,7 @@ import javax.sql.DataSource;
 @Configuration
 @EnableWebSecurity//开启security服务
 @EnableGlobalMethodSecurity(prePostEnabled = true)//开启全局security服务
-public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
+public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private CustomUserDetailsService userDetailsService;
     @Autowired
@@ -46,6 +47,9 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private CustomLogoutSuccessHandler logoutSuccessHandler;
 
+    @Autowired
+    private SmsCodeAuthenticationSecurityConfig smsCodeAuthenticationSecurityConfig;
+
     @Override
     public void configure(WebSecurity web) throws Exception {
         /**
@@ -58,8 +62,10 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests()
-                // 如果有匿名的url填在下面
+        http.apply(smsCodeAuthenticationSecurityConfig) // 添加短信验证登录
+                .and().authorizeRequests()
+                // 如果有允许匿名的url，填在下面
+                .antMatchers("/sms/code").permitAll()
                 .antMatchers("/getVerifyCode").permitAll()
                 .antMatchers("/login/invalid").permitAll()
                 .anyRequest().authenticated()
@@ -104,7 +110,6 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                 // 当达到最大值时,旧用户被踢出后处理方法
                 .expiredSessionStrategy(new CustomExpiredSessionStrategy())
                 .sessionRegistry(sessionRegistry())
-
         ;
 
 

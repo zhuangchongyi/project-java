@@ -1,5 +1,6 @@
-package com.zcy.security.authentication;
+package com.zcy.security.provider;
 
+import com.zcy.security.authentication.CustomWebAuthenticationDetails;
 import com.zcy.security.service.CustomUserDetailsService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,12 +21,12 @@ import javax.servlet.http.HttpServletRequest;
 
 /**
  * @Author zhuangchongyi
- * @Description 自定义AuthenticationProvider实现校验
+ * @Description 自定义AuthenticationProvider实现鉴权
  * @Date 2020/6/30 11:43
  */
 @Component
 public class CustomAuthenticationProvider implements AuthenticationProvider {
-    private static final Logger logger = LoggerFactory.getLogger(CustomAuthenticationProvider.class.getName());
+    private final Logger logger = LoggerFactory.getLogger(getClass());
     @Autowired
     private CustomUserDetailsService userDetailsService;
 
