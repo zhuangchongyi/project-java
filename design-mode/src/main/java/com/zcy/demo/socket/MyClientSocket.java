@@ -1,4 +1,4 @@
-package com.zcy.socket;
+package com.zcy.demo.socket;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
