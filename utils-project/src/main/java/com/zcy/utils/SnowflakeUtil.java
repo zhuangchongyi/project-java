@@ -37,7 +37,7 @@ public class SnowflakeUtil {
     /**
      * 工作进程id
      */
-    private long workerId;
+    private volatile long workerId;// 轻量级同步
     /**
      * 序列号
      */
@@ -108,12 +108,22 @@ public class SnowflakeUtil {
 
     public static void main(String[] args) {
         SnowflakeUtil util = new SnowflakeUtil(1023);
-        for (int i = 0; i < 100; i++) {
-            long id = util.nextId();
-            System.out.println(id);
-        }
-        String string = Long.toBinaryString(3940662823088136L);
-        System.out.println(string);
-        System.out.println(string.length());
+        Runnable r2 = () ->{
+//            SnowflakeUtil util = new SnowflakeUtil(1022);
+            for (int i = 0; i < 10; i++) {
+                long id = util.nextId();
+                System.out.println(id);
+            }
+        };
+        Runnable r1 = () ->{
+//            SnowflakeUtil util = new SnowflakeUtil(1022);// 存在重复的问题,
+            for (int i = 0; i < 10; i++) {
+                long id = util.nextId();
+                System.out.println(id);
+            }
+        };
+
+        new Thread(r1).start();
+        new Thread(r2).start();
     }
 }
