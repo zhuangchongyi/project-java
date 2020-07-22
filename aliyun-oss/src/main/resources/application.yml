@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: aliyun-oss
+
+server:
+  port: 8000
+
+oss:
+  aliyun:
+    endpoint: https://oss-cn-shenzhen.aliyuncs.com
+    bucket-name: bucket
+#    RAM用户,https://ram.console.aliyun.com/overview
+    access-key-id: LTAI4GHDyrAm1y4RMeUXdM7r
+    access-key-secret: TgjZGqPkWdLNFgYQNukLfTfjADdJjA
