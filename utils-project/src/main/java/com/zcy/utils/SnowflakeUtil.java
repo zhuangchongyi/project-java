@@ -80,16 +80,16 @@ public class SnowflakeUtil {
         }
         lastTimestamp = timestamp;
         return (timestamp - startTimestamp) << timestampShift //时间戳部分
-                | (workerId) << workerIdShift //机器识别部分
-                | (sequence); //序列号Id
+                | (workerId) << workerIdShift // 工作进程id部分
+                | (sequence); //序列号
     }
 
     /**
-     * 校验最后的时间戳
+     * 校验时间戳
      *
      * @return
      */
-    private synchronized long getNextTimestamp() {
+    private long getNextTimestamp() {
         long timestamp = getNowTimestamp();
         while (timestamp < lastTimestamp) {
             timestamp = getNowTimestamp();
@@ -108,11 +108,11 @@ public class SnowflakeUtil {
 
     public static void main(String[] args) {
         SnowflakeUtil util = new SnowflakeUtil(1023);
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 100; i++) {
             long id = util.nextId();
             System.out.println(id);
         }
-        String string = Long.toBinaryString(3932129885159432L);
+        String string = Long.toBinaryString(3940662823088136L);
         System.out.println(string);
         System.out.println(string.length());
     }
