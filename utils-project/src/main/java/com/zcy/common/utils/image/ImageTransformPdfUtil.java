@@ -1,4 +1,4 @@
-package com.zcy.utils.image;
+package com.zcy.common.utils.image;
 
 import com.lowagie.text.Document;
 import com.lowagie.text.DocumentException;

@@ -2,6 +2,7 @@ package com.zcy.oss;
 
 import com.aliyun.oss.OSS;
 import com.aliyun.oss.OSSClientBuilder;
+import com.zcy.common.utils.IdUtil;
 import com.zcy.oss.constant.AliyunOssConstant;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -12,11 +13,11 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Date;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class AliyunOssApplicationTests {
+
     @Test
     public void uploadFile() {
         OSS ossClient = null;
@@ -28,7 +29,7 @@ public class AliyunOssApplicationTests {
             Resource resource = new ClassPathResource("/static/image.jpg");
             System.err.println(resource.getURL().getPath());
             // 上传文件名
-            String fileName = new Date().getTime() +".jpg";
+            String fileName = IdUtil.simpleUUID() +".jpg";
             in = resource.getInputStream();
             ossClient.putObject(AliyunOssConstant.BUCKET_NAME, fileName, in);
             System.err.println("upload success!");

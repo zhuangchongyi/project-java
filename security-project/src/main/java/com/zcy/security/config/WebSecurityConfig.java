@@ -1,6 +1,5 @@
-package com.zcy.config;
+package com.zcy.security.config;
 
-import com.zcy.security.config.SmsCodeAuthenticationSecurityConfig;
 import com.zcy.security.handler.CustomAuthenticationFailureHandler;
 import com.zcy.security.handler.CustomAuthenticationSuccessHandler;
 import com.zcy.security.handler.CustomLogoutSuccessHandler;
@@ -65,6 +64,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.apply(smsCodeAuthenticationSecurityConfig) // 添加短信验证登录
                 .and().authorizeRequests()
                 // 如果有允许匿名的url，填在下面
+                .antMatchers("/api/**").permitAll()
                 .antMatchers("/sms/code").permitAll()
                 .antMatchers("/getVerifyCode").permitAll()
                 .antMatchers("/login/invalid").permitAll()

@@ -1,4 +1,4 @@
-package com.zcy.utils;
+package com.zcy.common.utils;
 
 /**
  * 雪花算法是由 Twitter 公布的分布式主键生成算法，它能够保证不同进程主键的不重复性，以及相同进程主键的有序性。

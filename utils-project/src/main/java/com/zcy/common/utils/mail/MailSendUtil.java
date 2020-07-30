@@ -1,4 +1,4 @@
-package com.zcy.utils.mail;
+package com.zcy.common.utils.mail;
 
 import com.zcy.common.constants.ContentTypeConstants;
 import com.zcy.common.constants.EncodeTypeConstants;

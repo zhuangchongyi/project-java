@@ -1,4 +1,4 @@
-package com.zcy.utils.image;
+package com.zcy.common.utils.image;
 
 import com.zcy.common.constants.FileSuffixTypeConstant;
 import sun.misc.BASE64Decoder;

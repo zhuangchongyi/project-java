@@ -4,21 +4,32 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <artifactId>project-java</artifactId>
-        <groupId>org.example</groupId>
+        <groupId>com.zcy</groupId>
         <version>1.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.zcy</groupId>
     <artifactId>aliyun-oss</artifactId>
 
-
     <dependencies>
+        <dependency>
+            <groupId>com.zcy</groupId>
+            <artifactId>utils-project</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+
         <dependency>
             <groupId>com.aliyun.oss</groupId>
             <artifactId>aliyun-sdk-oss</artifactId>
             <version>3.10.2</version>
         </dependency>
+        <!--minio依赖-->
+        <dependency>
+            <groupId>io.minio</groupId>
+            <artifactId>minio</artifactId>
+            <version>7.1.0</version>
+        </dependency>
+
     </dependencies>
 
     <build>

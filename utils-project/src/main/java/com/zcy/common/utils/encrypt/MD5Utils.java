@@ -1,4 +1,4 @@
-package com.zcy.utils.encrypt;
+package com.zcy.common.utils.encrypt;
 
 import java.security.MessageDigest;
 

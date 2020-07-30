@@ -1,4 +1,4 @@
-package com.zcy.utils.bqcode;
+package com.zcy.common.utils.bqcode;
 
 import com.google.zxing.*;
 import com.google.zxing.client.j2se.BufferedImageLuminanceSource;

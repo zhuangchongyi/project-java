@@ -1,4 +1,4 @@
-package com.zcy.utils.file;
+package com.zcy.common.utils.file;
 
 import java.io.*;
 import java.nio.channels.FileChannel;

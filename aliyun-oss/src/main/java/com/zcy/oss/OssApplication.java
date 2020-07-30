@@ -5,8 +5,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 
 @SpringBootApplication(exclude = DataSourceAutoConfiguration.class)
-public class AliyunOssApplication {
+public class OssApplication {
     public static void main(String[] args) {
-        SpringApplication.run(AliyunOssApplication.class, args);
+        SpringApplication.run(OssApplication.class, args);
     }
 }

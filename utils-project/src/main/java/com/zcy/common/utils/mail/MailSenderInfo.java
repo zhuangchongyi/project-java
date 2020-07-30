@@ -1,4 +1,4 @@
-package com.zcy.utils.mail;
+package com.zcy.common.utils.mail;
 
 import java.io.File;
 import java.util.Date;

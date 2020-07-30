@@ -1,4 +1,4 @@
-package com.zcy.utils.encrypt;
+package com.zcy.common.utils.encrypt;
 
 import sun.misc.BASE64Decoder;
 import sun.misc.BASE64Encoder;
