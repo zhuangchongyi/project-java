@@ -21,6 +21,9 @@ public class MinioConfig {
 
     @Bean
     public MinioClient minioClient() throws Exception {
-        return new MinioClient(minioConstant.getEndpoint(), minioConstant.getAccessKey(), minioConstant.getSecretKey());
+        return MinioClient.builder()
+                .endpoint(minioConstant.getEndpoint())
+                .credentials(minioConstant.getAccessKey(),minioConstant.getSecretKey()).build();
+//        return new MinioClient(minioConstant.getEndpoint(), minioConstant.getAccessKey(), minioConstant.getSecretKey());
     }
 }

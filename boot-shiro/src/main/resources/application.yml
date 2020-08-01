@@ -1,0 +1,20 @@
+server:
+  port: 8080
+spring:
+  datasource:
+    driverClassName: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/shirodb?useUnicode=true&zeroDateTimeBehavior=convertToNull&autoReconnect=true&characterEncoding=utf-8&serverTimezone=GMT%2B8
+    username: root
+    password: root
+  jpa:
+    show-sql: true # \u9ED8\u8BA4false\uFF0C\u5728\u65E5\u5FD7\u91CC\u663E\u793A\u6267\u884C\u7684sql\u8BED\u53E5
+    database: mysql
+    hibernate.ddl-auto: update #\u6307\u5B9A\u4E3Aupdate\uFF0C\u6BCF\u6B21\u542F\u52A8\u9879\u76EE\u68C0\u6D4B\u8868\u7ED3\u6784\u6709\u53D8\u5316\u7684\u65F6\u5019\u4F1A\u65B0\u589E\u5B57\u6BB5\uFF0C\u8868\u4E0D\u5B58\u5728\u65F6\u4F1A\u65B0\u5EFA\uFF0C\u5982\u679C\u6307\u5B9Acreate\uFF0C\u5219\u6BCF\u6B21\u542F\u52A8\u9879\u76EE\u90FD\u4F1A\u6E05\u7A7A\u6570\u636E\u5E76\u5220\u9664\u8868\uFF0C\u518D\u65B0\u5EFA
+    properties.hibernate.dialect: org.hibernate.dialect.MySQL5Dialect
+    database-platform: org.hibernate.dialect.MySQL5Dialect
+    hibernate:
+      naming:
+        implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyJpaImpl #\u6307\u5B9Ajpa\u7684\u81EA\u52A8\u8868\u751F\u6210\u7B56\u7565\uFF0C\u9A7C\u5CF0\u81EA\u52A8\u6620\u5C04\u4E3A\u4E0B\u5212\u7EBF\u683C\u5F0F
+        #physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+
+
