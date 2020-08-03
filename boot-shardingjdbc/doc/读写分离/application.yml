@@ -1,0 +1,39 @@
+sharding:
+  jdbc:
+    dataSource:
+      names: master,slave1,slave2
+      # 配置主库
+      master:
+        type: com.alibaba.druid.pool.DruidDataSource
+        driverClassName: com.mysql.cj.jdbc.Driver
+        url: jdbc:mysql://192.168.131.139:3310/db0?useUnicode=true&characterEncoding=utf8&tinyInt1isBit=false&useSSL=false&serverTimezone=GMT
+        username: root
+        password: root
+        # 最大连接数
+        maxPoolSize: 20
+      slave1: # 配置第一个从库
+        type: com.alibaba.druid.pool.DruidDataSource
+        driverClassName: com.mysql.cj.jdbc.Driver
+        url: jdbc:mysql://192.168.131.139:3311/db0?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true&useSSL=false&serverTimezone=GMT
+        username: root
+        password: root
+        maxPoolSize: 20
+      slave2: # 配置第二个从库
+        type: com.alibaba.druid.pool.DruidDataSource
+        driverClassName: com.mysql.cj.jdbc.Driver
+        url: jdbc:mysql://192.168.131.139:3312/db0?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true&useSSL=false&serverTimezone=GMT
+        username: root
+        password: root
+        maxPoolSize: 20
+    config:
+      masterslave: # 配置读写分离
+        load-balance-algorithm-type: round_robin # 配置从库选择策略，提供轮询与随机，这里选择用轮询//random 随机 //round_robin 轮询
+        name: msdb
+        master-data-source-name: master
+        slave-data-source-names: slave1,slave2
+      props:
+        sql: # 开启SQL显示，默认值: false
+          show: true
+spring:
+  main:
+    allow-bean-definition-overriding: true
