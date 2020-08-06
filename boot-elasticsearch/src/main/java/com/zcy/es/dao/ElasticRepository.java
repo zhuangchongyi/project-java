@@ -3,11 +3,9 @@ package com.zcy.es.dao;
 import com.zcy.es.bean.DocBean;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.elasticsearch.annotations.Mapping;
 import org.springframework.data.elasticsearch.annotations.Query;
 import org.springframework.data.elasticsearch.repository.ElasticsearchRepository;
 
-@Mapping
 public interface ElasticRepository extends ElasticsearchRepository<DocBean, Long> {
     //@Query 参考 https://docs.spring.io/spring-data/elasticsearch/docs/current/reference/html/#elasticsearch.query-methods.at-query
 
