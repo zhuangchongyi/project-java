@@ -10,8 +10,8 @@ oss:
     endpoint: https://oss-cn-shenzhen.aliyuncs.com
     bucket-name: bucket
 #    RAM用户,https://ram.console.aliyun.com/overview
-    access-key-id: LTAI4GHDyrAm1y4RMeUXdM7ra
-    access-key-secret: TgjZGqPkWdLNFgYQNukLfTfjADdJjAa
+    access-key-id: aaa
+    access-key-secret: 123
 #minio对象存储服务
   minio:
     endpoint: http://192.168.131.139:9000
